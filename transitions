@@ -1,0 +1,40 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
+import matplotlib.animation as animation
+
+# Load the images
+im1 = Image.open("image1.png")
+im2 = Image.open("image2.png")
+
+# Convert the images to numpy arrays
+im1_array = np.array(im1)
+im2_array = np.array(im2)
+
+# Create a grid of vertices
+x, y = np.meshgrid(np.arange(im1_array.shape[1]), np.arange(im1_array.shape[0]))
+
+# Create a 2D plot
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+# Plot the images as surfaces
+ax.imshow(im1_array/255.0)
+ax.imshow(im2_array/255.0, alpha=0)
+
+# Set the axis limits and labels
+ax.set_xlim(0, im1_array.shape[1])
+ax.set_ylim(0, im1_array.shape[0])
+ax.set_xlabel("X")
+ax.set_ylabel("Y")
+
+# Create a function to update the plot
+def update(i):
+    new_z = (1-i/10)*im1_array/255.0 + i/10*im2_array/255.0
+    ax.imshow(new_z)
+
+# Create an animation
+ani = animation.FuncAnimation(fig, update, frames=np.arange(0, 10), interval=100)
+
+# Show the plot and animation
+plt.show()
