@@ -1,0 +1,35 @@
+import cv2
+
+# Load the images
+img1 = cv2.imread('image1.png')
+img2 = cv2.imread('image1-1.png')
+
+# Resize the images to the same size
+img1_resized = cv2.resize(img1, (640, 480))
+img2_resized = cv2.resize(img2, (640, 480))
+
+# Set the number of frames to interpolate
+num_frames = 5
+
+# Create an empty list to store the interpolated frames
+interpolated_frames = []
+
+# Loop through the frames to be interpolated
+for i in range(1, num_frames + 1):
+    # Calculate the weight for each image
+    alpha = float(i) / (num_frames + 1)
+    beta = 1 - alpha
+    
+    # Interpolate the frames
+    interpolated_frame = cv2.addWeighted(img1_resized, alpha, img2_resized, beta, 0)
+    
+    # Append the interpolated frame to the list
+    interpolated_frames.append(interpolated_frame)
+
+# Display the interpolated frames
+for frame in interpolated_frames:
+    cv2.imshow('Interpolated Frame', frame)
+    cv2.waitKey(1000)
+
+# Release the window and destroy all windows
+cv2.destroyAllWindows()
