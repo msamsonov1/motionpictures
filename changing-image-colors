@@ -1,0 +1,30 @@
+import cv2
+import numpy as np
+
+# Load the image
+img = cv2.imread('image.png')
+
+# Define the color range for the eyes in HSV color space
+lower_color = np.array([0, 0, 0])
+upper_color = np.array([255, 255, 100])
+
+# Convert the image to HSV color space
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+# Create a mask to select the eyes
+mask = cv2.inRange(hsv, lower_color, upper_color)
+
+# Apply the mask to the original image
+masked_img = cv2.bitwise_and(img, img, mask=mask)
+
+# Change the color of the eyes to red
+masked_img[mask > 0] = (0, 0, 255)
+
+# Display the image with the red eyes
+cv2.imshow('Image', masked_img)
+
+# Wait for user input to quit
+cv2.waitKey(0)
+
+# Clean up
+cv2.destroyAllWindows()
