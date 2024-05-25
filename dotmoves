@@ -1,0 +1,47 @@
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
+# Define speed (adjust for desired movement speed)
+speed = 0.1  # Change this value to control how fast the dot moves
+
+# Set initial and final positions
+start_pos = 1
+end_pos = 2
+
+# Define total number of frames for a single cycle (1 to 2 and back)
+total_frames_per_cycle = 2 * int((end_pos - start_pos) / speed)
+
+# Define animation function
+def animate(i):
+  # Calculate cycle number based on frame number
+  cycle_number = int(i / total_frames_per_cycle)
+
+  # Calculate direction based on cycle number (0 for forward, 1 for backward)
+  direction = cycle_number % 2
+
+  # Calculate current position based on speed, frame number, and direction
+  if direction == 0:
+    current_pos = start_pos + speed * (i % total_frames_per_cycle)
+  else:
+    current_pos = end_pos - speed * ((i % total_frames_per_cycle) + 1)
+
+  # Clear the plot for each frame (optional for smoother animation)
+  plt.cla()
+
+  # Plot the dot
+  plt.plot([current_pos], [0], 'o', markersize=20, color='red')  # Adjust marker size and color
+
+  # Set plot limits
+  plt.xlim(0, 3)  # Adjust x-axis limits based on your desired range
+  plt.ylim(-1, 1)  # Adjust y-axis limits (optional, can be removed)
+
+  # Set labels (optional)
+  plt.xlabel("X-Position")
+  plt.ylabel("Y-Position")
+
+# Create the animation object
+fig, ax = plt.subplots()
+ani = animation.FuncAnimation(fig, animate, frames=total_frames_per_cycle * 2, interval=10)  # Adjust interval for animation speed
+
+plt.title("Dot Moving from {} to {} and Back".format(start_pos, end_pos))
+plt.show()
